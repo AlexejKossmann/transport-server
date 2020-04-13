@@ -8,7 +8,7 @@ export class World {
     private readonly width: number;
     private readonly height: number;
     private isInitialized: boolean;
-    public tiles: Tile[][] = [];
+    private tiles: Tile[][] = [];
 
     constructor(width: number, height: number ) {
         this.width = width;
@@ -16,7 +16,7 @@ export class World {
         this.isInitialized = false;
     }
 
-    createTiles() {
+    private createTiles() {
         for (let i = 0; i<this.width; i++){
             let temp = [];
             for (let j = 0; j<this.height; j++) {
@@ -28,15 +28,17 @@ export class World {
         }
     }
 
-    getTiles() {
+    public getTiles(): Tile[][] {
         return this.tiles;
     }
 
-    setTileValue(posX:number, posY:number, value:number) {
+    private setTileValue(posX:number, posY:number, value:number) {
         this.tiles[posX][posY].setValue(value);
     }
 
-    generate() {
+    public generate() {
+        this.createTiles();
+
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
                 let noise = makeNoise2D(WorldConfig.WORLD_SEED);
@@ -45,7 +47,7 @@ export class World {
         }
     }
 
-    getRandomPosition(){
+    private getRandomPosition(){
         return new Position(Math.floor(Math.random() * Math.floor(this.width)), Math.floor(Math.random() * Math.floor(this.height)));
     }
 

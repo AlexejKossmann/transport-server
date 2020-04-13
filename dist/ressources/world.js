@@ -29,6 +29,7 @@ class World {
         this.tiles[posX][posY].setValue(value);
     }
     generate() {
+        this.createTiles();
         for (let y = 0; y < this.height; y++) {
             for (let x = 0; x < this.width; x++) {
                 let noise = open_simplex_noise_1.makeNoise2D(WorldConfig_1.WorldConfig.WORLD_SEED);

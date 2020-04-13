@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const World_1 = require("./ressources/World");
-let world = new World_1.World(100, 100);
-world.createTiles();
-world.generate();
-console.log(world.getTiles());
+const transport_server_1 = require("./transport-server");
+let app = new transport_server_1.TransportServer().getApp();
+exports.app = app;
 //# sourceMappingURL=index.js.map

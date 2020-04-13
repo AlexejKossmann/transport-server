@@ -5,6 +5,9 @@
     "target": "es6",
     "noImplicitAny": true,
     "moduleResolution": "node",
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
@@ -17,5 +20,10 @@
   },
   "include": [
     "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "typings",
+    "dist"
   ]
 }
