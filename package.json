@@ -14,7 +14,8 @@
     "@types/mongodb": "^3.5.5",
     "@types/node": "^13.11.1",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "open-simplex-noise": "^2.2.0"
   },
   "devDependencies": {
     "typescript": "^3.8.3"

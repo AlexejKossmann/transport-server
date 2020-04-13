@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Tile_1 = require("./Tile");
 const WorldConfig_1 = require("./WorldConfig");
 const Position_1 = require("./Position");
-const Perlin_1 = require("./Perlin/Perlin");
+const open_simplex_noise_1 = require("open-simplex-noise");
 class World {
     constructor(width, height) {
         this.tiles = [];
@@ -29,14 +29,11 @@ class World {
         this.tiles[posX][posY].setValue(value);
     }
     generate() {
-        let yoff = 0;
         for (let y = 0; y < this.height; y++) {
-            let xoff = 0;
             for (let x = 0; x < this.width; x++) {
-                this.tiles[x][y].value = Perlin_1.Perlin.perlin2(x, y);
-                xoff += WorldConfig_1.WorldConfig.PERLIN_INCREMENT;
+                let noise = open_simplex_noise_1.makeNoise2D(WorldConfig_1.WorldConfig.WORLD_SEED);
+                this.tiles[x][y].value = noise(x, y);
             }
-            yoff += WorldConfig_1.WorldConfig.PERLIN_INCREMENT;
         }
     }
     getRandomPosition() {

@@ -1,7 +1,7 @@
 import { Tile } from './Tile';
 import { WorldConfig } from "./WorldConfig";
 import { Position } from "./Position";
-import { Perlin } from "./Perlin/Perlin";
+import { makeNoise2D } from "open-simplex-noise";
 
 export class World {
 
@@ -37,14 +37,11 @@ export class World {
     }
 
     generate() {
-        let yoff = 0;
         for (let y = 0; y < this.height; y++) {
-            let xoff = 0;
             for (let x = 0; x < this.width; x++) {
-                this.tiles[x][y].value = Perlin.perlin2(x,y);
-                xoff += WorldConfig.PERLIN_INCREMENT;
+                let noise = makeNoise2D(WorldConfig.WORLD_SEED);
+                this.tiles[x][y].value = noise(x,y);
             }
-            yoff += WorldConfig.PERLIN_INCREMENT;
         }
     }
 
