@@ -1,0 +1,69 @@
+<!-- ./client/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+</head>
+<body>
+<button onclick="getWorld()">generate</button>
+<canvas id="gameworld"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script>
+    const socket = io("http://localhost:3001");
+
+    function getWorld() {
+        socket.emit('getWorld');
+
+        socket.on('getWorld', function (data) {
+            const canvas = document.querySelector('#gameworld');
+
+            console.log(data[0][0].value);
+            canvas.width = data[0][0].size * 100;
+            canvas.height = data[0][0].size * 100;
+            let ctx = canvas.getContext('2d');
+
+            let imageData = ctx.createImageData(canvas.width, canvas.height);
+            let scaled = ctx.createImageData(canvas.width*10, canvas.height*10);
+            for(let i = 0; i < data.length; i++) {
+                for (let j = 0; j < data[i].length; j++) {
+                    let pixelindex = (j * canvas.clientWidth + i) * 4;
+                    imageData.data[pixelindex] = data[i][j].value * 255;
+                    imageData.data[pixelindex+1] = data[i][j].value * 255;
+                    imageData.data[pixelindex+2] = data[i][j].value * 255;
+                    imageData.data[pixelindex+3] = 255;
+
+                }
+            }
+
+            for(let row = 0; row < imageData.height; row++) {
+                for(let col = 0; col < imageData.width; col++) {
+                    let sourcePixel = [
+                        imageData.data[((row * imageData.width + col) * 4)],
+                        imageData.data[(row * imageData.width + col) * 4 + 1],
+                        imageData.data[(row * imageData.width + col) * 4 + 2],
+                        imageData.data[(row * imageData.width + col) * 4 + 3]
+                    ];
+                    for(let y = 0; y < 10; y++) {
+                        let destRow = row * 10 + y;
+                        for(let x = 0; x < 10; x++) {
+                            let destCol = col * 10 + x;
+                            for(let i = 0; i < 4; i++) {
+                                scaled.data[(destRow * scaled.width + destCol) * 4 + i] =
+                                    sourcePixel[i];
+                            }
+                        }
+                    }
+                }
+            }
+
+            ctx.putImageData(scaled,0,0);
+        });
+    }
+
+</script>
+</body>
+</html>
